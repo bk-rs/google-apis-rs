@@ -1,0 +1,7 @@
+[package]
+name = "google-oauth2"
+version = "0.0.0"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+
+[dependencies]

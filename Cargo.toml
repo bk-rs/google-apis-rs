@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "google-admob-rest",
+    "google-androidpublisher-rest",
+    "google-appengine-rest",
+    "google-oauth2",
+    "google-rest-client",
+    "google-rest-endpoint",
+    "google-rest-isahc-client",
+    "google-rest-resource-method",
+]

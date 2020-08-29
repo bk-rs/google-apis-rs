@@ -1,0 +1,8 @@
+[package]
+name = "google-rest-resource-method"
+version = "0.1.0"
+authors = ["vkill <vkill.net@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+google-rest-endpoint = { path = "../google-rest-endpoint", version = "0.1", default-features = false, features = [] }
