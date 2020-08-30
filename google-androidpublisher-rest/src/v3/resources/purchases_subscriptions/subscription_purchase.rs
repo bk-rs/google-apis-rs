@@ -200,3 +200,35 @@ where
 {
     deserialize_datetime_utc_from_milliseconds(deserializer).map(|x| Some(x))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use std::io;
+
+    #[test]
+    fn simple() -> io::Result<()> {
+        let json = r#"
+        {
+            "startTimeMillis": "1598679935343",
+            "expiryTimeMillis": "1598953529067",
+            "autoRenewing": true,
+            "priceCurrencyCode": "TWD",
+            "priceAmountMicros": "160000000",
+            "countryCode": "TW",
+            "developerPayload": "",
+            "paymentState": 2,
+            "orderId": "GPA.0000-0595-6795-14075",
+            "acknowledgementState": 1,
+            "kind": "androidpublisher#subscriptionPurchase"
+        }
+        "#;
+
+        let r: SubscriptionPurchase = serde_json::from_str(json)?;
+
+        assert_eq!(r.kind, "androidpublisher#subscriptionPurchase");
+
+        Ok(())
+    }
+}
