@@ -1,5 +1,5 @@
-pub mod purchases_subscriptions;
+pub mod resources;
 pub mod types;
 
-pub use purchases_subscriptions::methods::get::PurchasesSubscriptionsGet;
-pub use purchases_subscriptions::resources::subscription_purchase::SubscriptionPurchase;
+pub use resources::purchases_subscriptions::methods::get::PurchasesSubscriptionsGet;
+pub use resources::purchases_subscriptions::subscription_purchase::SubscriptionPurchase;
