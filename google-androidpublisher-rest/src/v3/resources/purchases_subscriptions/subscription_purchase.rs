@@ -235,6 +235,16 @@ mod tests {
         let r: SubscriptionPurchase = serde_json::from_str(json)?;
 
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
+        assert_eq!(r.start_time.timestamp_millis(), 1598679935343);
+        assert_eq!(r.expiry_time.timestamp_millis(), 1598953529067);
+        assert_eq!(r.auto_renewing, true);
+        assert_eq!(r.price_currency_code, "TWD");
+        assert_eq!(r.price_amount_micros, 160000000);
+        assert_eq!(r.country_code, "TW");
+        assert_eq!(r.developer_payload, "");
+        assert_eq!(r.payment_state, Some(PaymentState::PaymentReceived));
+        assert_eq!(r.order_id, "GPA.0000-0595-6795-14075");
+        assert_eq!(r.acknowledgement_state, AcknowledgementState::Acknowledged);
 
         Ok(())
     }
