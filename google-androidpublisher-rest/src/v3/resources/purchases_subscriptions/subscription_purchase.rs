@@ -5,11 +5,11 @@ use serde_aux::field_attributes::{
 };
 use serde_repr::Deserialize_repr;
 
-use crate::v3::types::price::Price;
+use crate::v3::types::{price::Price, purchases_kind::PurchasesKind};
 
 #[derive(Deserialize, Debug)]
 pub struct SubscriptionPurchase {
-    pub kind: String,
+    pub kind: PurchasesKind,
 
     #[serde(
         rename(deserialize = "startTimeMillis"),
@@ -234,7 +234,7 @@ mod tests {
 
         let r: SubscriptionPurchase = serde_json::from_str(json)?;
 
-        assert_eq!(r.kind, "androidpublisher#subscriptionPurchase");
+        assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
 
         Ok(())
     }
