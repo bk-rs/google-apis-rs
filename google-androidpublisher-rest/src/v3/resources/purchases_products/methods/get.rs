@@ -8,36 +8,36 @@ use http::{
 };
 
 use crate::v3::resources::resource_method_prelude::*;
-use crate::v3::SubscriptionPurchase;
+use crate::v3::ProductPurchase;
 
-pub struct PurchasesSubscriptionsGet {
+pub struct PurchasesproductsGet {
     package_name: String,
-    subscription_id: String,
+    product_id: String,
     token: String,
     access_token: String,
 }
-impl PurchasesSubscriptionsGet {
+impl PurchasesproductsGet {
     pub fn new(
         package_name: String,
-        subscription_id: String,
+        product_id: String,
         token: String,
         access_token: String,
     ) -> Self {
         Self {
             package_name,
-            subscription_id,
+            product_id,
             token,
             access_token,
         }
     }
 }
 
-impl Endpoint for PurchasesSubscriptionsGet {
-    type ParseResponseOutput = SubscriptionPurchase;
+impl Endpoint for PurchasesproductsGet {
+    type ParseResponseOutput = ProductPurchase;
     type RetryReason = ();
 
     fn render_request(&self) -> io::Result<Request<Body>> {
-        let url = format!("https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{}/purchases/subscriptions/{}/tokens/{}", self.package_name, self.subscription_id, self.token);
+        let url = format!("https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{}/purchases/products/{}/tokens/{}", self.package_name, self.product_id, self.token);
 
         let request = Request::builder()
             .method(Method::GET)
@@ -65,10 +65,10 @@ impl Endpoint for PurchasesSubscriptionsGet {
             }
         }
 
-        let body: SubscriptionPurchase = serde_json::from_slice(response.body())?;
+        let body: ProductPurchase = serde_json::from_slice(response.body())?;
 
         Ok(EndpointParseResponseOutput::Done(body))
     }
 }
 
-impl ResourceMethod for PurchasesSubscriptionsGet {}
+impl ResourceMethod for PurchasesproductsGet {}
