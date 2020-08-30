@@ -8,6 +8,10 @@ edition = "2018"
 name = "iap_verify_subscription"
 path = "src/iap_verify_subscription.rs"
 
+[[bin]]
+name = "iap_verify_product"
+path = "src/iap_verify_product.rs"
+
 [dependencies]
 google-androidpublisher-rest = { path = "../../google-androidpublisher-rest", version = "0.1" }
 google-rest-isahc-client = { path = "../../google-rest-isahc-client", version = "0.1" }

@@ -10,13 +10,13 @@ use http::{
 use crate::v3::resources::resource_method_prelude::*;
 use crate::v3::ProductPurchase;
 
-pub struct PurchasesproductsGet {
+pub struct PurchasesProductsGet {
     package_name: String,
     product_id: String,
     token: String,
     access_token: String,
 }
-impl PurchasesproductsGet {
+impl PurchasesProductsGet {
     pub fn new(
         package_name: String,
         product_id: String,
@@ -32,7 +32,7 @@ impl PurchasesproductsGet {
     }
 }
 
-impl Endpoint for PurchasesproductsGet {
+impl Endpoint for PurchasesProductsGet {
     type ParseResponseOutput = ProductPurchase;
     type RetryReason = ();
 
@@ -71,4 +71,4 @@ impl Endpoint for PurchasesproductsGet {
     }
 }
 
-impl ResourceMethod for PurchasesproductsGet {}
+impl ResourceMethod for PurchasesProductsGet {}

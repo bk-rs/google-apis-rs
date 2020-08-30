@@ -1,11 +1,11 @@
 /*
-cargo run -p googleapis-demo-async-std --bin iap_verify_subscription 'YOUR_GOOGLE_IAP_ACCESS_TOKEN' 'package_name' 'subscription_id' 'token'
+cargo run -p googleapis-demo-async-std --bin iap_verify_product 'YOUR_GOOGLE_IAP_ACCESS_TOKEN' 'package_name' 'product_id' 'token'
 */
 
 use std::env;
 use std::io;
 
-use google_androidpublisher_rest::v3::PurchasesSubscriptionsGet;
+use google_androidpublisher_rest::v3::PurchasesProductsGet;
 use google_rest_isahc_client::{Client, IsahcClient};
 
 #[async_std::main]
@@ -20,22 +20,18 @@ async fn run() -> io::Result<()> {
     let package_name = env::args()
         .nth(2)
         .unwrap_or_else(|| env::var("PACKAGE_NAME").unwrap());
-    let subscription_id = env::args()
+    let product_id = env::args()
         .nth(3)
-        .unwrap_or_else(|| env::var("SUBSCRIPTION_ID").unwrap());
+        .unwrap_or_else(|| env::var("PRODUCT_ID").unwrap());
     let token = env::args()
         .nth(4)
         .unwrap_or_else(|| env::var("TOKEN").unwrap());
 
-    println!("iap_verify_subscription");
+    println!("iap_verify_product");
 
     //
-    let mut resource_method = PurchasesSubscriptionsGet::new(
-        package_name,
-        subscription_id,
-        token,
-        google_iap_access_token,
-    );
+    let mut resource_method =
+        PurchasesProductsGet::new(package_name, product_id, token, google_iap_access_token);
 
     let isahc_client = IsahcClient::new()?;
 

@@ -6,5 +6,5 @@ pub use resources::purchases_subscriptions::{
 };
 
 pub use resources::purchases_products::{
-    methods::get::PurchasesproductsGet, product_purchase::ProductPurchase,
+    methods::get::PurchasesProductsGet, product_purchase::ProductPurchase,
 };
