@@ -3,6 +3,7 @@ use serde::{Deserialize, Deserializer};
 use serde_aux::field_attributes::{
     deserialize_datetime_utc_from_milliseconds, deserialize_number_from_string,
 };
+use serde_repr::Deserialize_repr;
 
 use crate::v3::types::price::Price;
 
@@ -124,7 +125,8 @@ pub struct IntroductoryPriceInfo {
     pub introductory_price_cycles: usize,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum PaymentState {
     PaymentPending = 0,
     PaymentReceived = 2,
@@ -132,7 +134,8 @@ pub enum PaymentState {
     PendingDeferredUpgradeOrDowngrade = 4,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum CancelReason {
     UserCanceledTheSubscription = 0,
     SubscriptionWasCanceledByTheSystem = 1,
@@ -149,7 +152,8 @@ pub struct SubscriptionCancelSurveyResult {
     pub user_input_cancel_reason: Option<String>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum CancelSurveyReason {
     Other = 0,
     IDoesNotUseThisServiceEnough = 1,
@@ -158,7 +162,8 @@ pub enum CancelSurveyReason {
     IFoundABetterApp = 4,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum PurchaseType {
     Test = 0,
     Promo = 1,
@@ -171,19 +176,21 @@ pub struct SubscriptionPriceChange {
 
     pub state: SubscriptionPriceChangeState,
 }
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum SubscriptionPriceChangeState {
     Outstanding = 0,
     Accepted = 1,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum AcknowledgementState {
     YetToBeAcknowledged = 0,
     Acknowledged = 1,
 }
-
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize_repr, Debug, PartialEq)]
+#[repr(u8)]
 pub enum PromotionType {
     OneTimeCode = 0,
     VanityCode = 1,
