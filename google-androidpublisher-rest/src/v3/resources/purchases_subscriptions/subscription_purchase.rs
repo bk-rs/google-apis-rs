@@ -129,9 +129,9 @@ pub struct IntroductoryPriceInfo {
 #[repr(u8)]
 pub enum PaymentState {
     PaymentPending = 0,
-    PaymentReceived = 2,
-    FreeTrial = 3,
-    PendingDeferredUpgradeOrDowngrade = 4,
+    PaymentReceived = 1,
+    FreeTrial = 2,
+    PendingDeferredUpgradeOrDowngrade = 3,
 }
 
 #[derive(Deserialize_repr, Debug, PartialEq)]
@@ -215,35 +215,73 @@ mod tests {
     use std::io;
 
     #[test]
-    fn simple() -> io::Result<()> {
+    fn auto_renewing_is_true() -> io::Result<()> {
         let json = r#"
         {
-            "startTimeMillis": "1598679935343",
-            "expiryTimeMillis": "1598953529067",
+            "kind": "androidpublisher#subscriptionPurchase",
+            "startTimeMillis": "1565173322987",
+            "expiryTimeMillis": "1565173847452",
             "autoRenewing": true,
-            "priceCurrencyCode": "TWD",
-            "priceAmountMicros": "160000000",
-            "countryCode": "TW",
+            "priceCurrencyCode": "USD",
+            "priceAmountMicros": "6490000",
+            "countryCode": "US",
             "developerPayload": "",
-            "paymentState": 2,
-            "orderId": "GPA.0000-0595-6795-14075",
-            "acknowledgementState": 1,
-            "kind": "androidpublisher#subscriptionPurchase"
+            "paymentState": 1,
+            "orderId": "GPA.0000-9829-1189-24947",
+            "acknowledgementState": 1
         }
         "#;
 
         let r: SubscriptionPurchase = serde_json::from_str(json)?;
 
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
-        assert_eq!(r.start_time.timestamp_millis(), 1598679935343);
-        assert_eq!(r.expiry_time.timestamp_millis(), 1598953529067);
+        assert_eq!(r.start_time.timestamp_millis(), 1565173322987);
+        assert_eq!(r.expiry_time.timestamp_millis(), 1565173847452);
         assert_eq!(r.auto_renewing, true);
-        assert_eq!(r.price_currency_code, "TWD");
-        assert_eq!(r.price_amount_micros, 160000000);
-        assert_eq!(r.country_code, "TW");
+        assert_eq!(r.price_currency_code, "USD");
+        assert_eq!(r.price_amount_micros, 6490000);
+        assert_eq!(r.country_code, "US");
         assert_eq!(r.developer_payload, "");
         assert_eq!(r.payment_state, Some(PaymentState::PaymentReceived));
-        assert_eq!(r.order_id, "GPA.0000-0595-6795-14075");
+        assert_eq!(r.order_id, "GPA.0000-9829-1189-24947");
+        assert_eq!(r.acknowledgement_state, AcknowledgementState::Acknowledged);
+
+        Ok(())
+    }
+
+    #[test]
+    fn auto_renewing_is_false() -> io::Result<()> {
+        let json = r#"
+        {
+            "kind": "androidpublisher#subscriptionPurchase",
+            "startTimeMillis": "1565163156123",
+            "expiryTimeMillis": "1565165367979",
+            "autoRenewing": false,
+            "priceCurrencyCode": "USD",
+            "priceAmountMicros": "6490000",
+            "countryCode": "US",
+            "developerPayload": "",
+            "cancelReason": 1,
+            "orderId": "GPA.0000-2151-5181-25913..5",
+            "acknowledgementState": 1
+        }
+        "#;
+
+        let r: SubscriptionPurchase = serde_json::from_str(json)?;
+
+        assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
+        assert_eq!(r.start_time.timestamp_millis(), 1565163156123);
+        assert_eq!(r.expiry_time.timestamp_millis(), 1565165367979);
+        assert_eq!(r.auto_renewing, false);
+        assert_eq!(r.price_currency_code, "USD");
+        assert_eq!(r.price_amount_micros, 6490000);
+        assert_eq!(r.country_code, "US");
+        assert_eq!(r.developer_payload, "");
+        assert_eq!(
+            r.cancel_reason,
+            Some(CancelReason::SubscriptionWasCanceledByTheSystem)
+        );
+        assert_eq!(r.order_id, "GPA.0000-2151-5181-25913..5");
         assert_eq!(r.acknowledgement_state, AcknowledgementState::Acknowledged);
 
         Ok(())
