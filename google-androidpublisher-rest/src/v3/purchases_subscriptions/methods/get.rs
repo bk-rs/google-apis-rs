@@ -3,7 +3,7 @@
 use std::io;
 
 use http::{
-    header::{ACCEPT, CONTENT_TYPE, USER_AGENT},
+    header::{ACCEPT, AUTHORIZATION},
     Method, StatusCode, Version,
 };
 
@@ -15,13 +15,20 @@ pub struct PurchasesSubscriptionsGet {
     package_name: String,
     subscription_id: String,
     token: String,
+    access_token: String,
 }
 impl PurchasesSubscriptionsGet {
-    pub fn new(package_name: String, subscription_id: String, token: String) -> Self {
+    pub fn new(
+        package_name: String,
+        subscription_id: String,
+        token: String,
+        access_token: String,
+    ) -> Self {
         Self {
             package_name,
             subscription_id,
             token,
+            access_token,
         }
     }
 }
@@ -31,14 +38,37 @@ impl Endpoint for PurchasesSubscriptionsGet {
     type RetryReason = ();
 
     fn render_request(&self) -> io::Result<Request<Body>> {
-        todo!()
+        let url = format!("https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{}/purchases/subscriptions/{}/tokens/{}", self.package_name, self.subscription_id, self.token);
+
+        let request = Request::builder()
+            .method(Method::GET)
+            .uri(url)
+            .version(Version::HTTP_11)
+            .header(AUTHORIZATION, format!("Bearer {}", self.access_token))
+            .header(ACCEPT, "application/json")
+            .body(vec![])
+            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+
+        Ok(request)
     }
 
     fn parse_response(
         &mut self,
         response: Response<Body>,
     ) -> io::Result<EndpointParseResponseOutput<Self::ParseResponseOutput, Self::RetryReason>> {
-        todo!()
+        match response.status() {
+            StatusCode::OK => {}
+            _ => {
+                return Err(io::Error::new(
+                    io::ErrorKind::Other,
+                    format!("status [{}] mismatch", response.status()),
+                ));
+            }
+        }
+        println!("{:?}", response.body());
+        let body: ResponseBody = serde_json::from_slice(response.body())?;
+
+        Ok(EndpointParseResponseOutput::Done(body))
     }
 }
 
