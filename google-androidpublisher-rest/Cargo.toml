@@ -9,3 +9,5 @@ google-rest-resource-method = { path = "../google-rest-resource-method", version
 
 serde = { version = "1.0", default-features = false, features = ["std", "derive"] }
 serde_json = { version = "1.0", default-features = false, features = ["std"] }
+chrono = { version = "0.4", default-features = false, features = [] }
+serde-aux = { version = "0.6", default-features = false, features = ["chrono"] }

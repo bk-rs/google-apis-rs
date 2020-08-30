@@ -7,9 +7,8 @@ use http::{
     Method, StatusCode, Version,
 };
 
-use serde::Deserialize;
-
 use super::resource_method_prelude::*;
+use crate::v3::SubscriptionPurchase;
 
 pub struct PurchasesSubscriptionsGet {
     package_name: String,
@@ -34,7 +33,7 @@ impl PurchasesSubscriptionsGet {
 }
 
 impl Endpoint for PurchasesSubscriptionsGet {
-    type ParseResponseOutput = ResponseBody;
+    type ParseResponseOutput = SubscriptionPurchase;
     type RetryReason = ();
 
     fn render_request(&self) -> io::Result<Request<Body>> {
@@ -65,17 +64,11 @@ impl Endpoint for PurchasesSubscriptionsGet {
                 ));
             }
         }
-        println!("{:?}", response.body());
-        let body: ResponseBody = serde_json::from_slice(response.body())?;
+
+        let body: SubscriptionPurchase = serde_json::from_slice(response.body())?;
 
         Ok(EndpointParseResponseOutput::Done(body))
     }
 }
 
 impl ResourceMethod for PurchasesSubscriptionsGet {}
-
-//
-//
-//
-#[derive(Deserialize, Debug)]
-pub struct ResponseBody {}
