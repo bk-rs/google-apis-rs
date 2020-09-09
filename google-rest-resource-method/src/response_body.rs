@@ -1,10 +1,36 @@
-use serde::Deserialize;
+use std::result;
 
-#[derive(Debug, Deserialize)]
-#[serde(untagged)]
+use serde::{de, Deserialize, Deserializer};
+use serde_json::{Map, Value};
+
+#[derive(Debug)]
 pub enum ResponseBody<Resource> {
     Success(Resource),
     Error(ErrorResponseBody),
+}
+impl<'de, Resource> Deserialize<'de> for ResponseBody<Resource>
+where
+    Resource: Deserialize<'de>,
+{
+    fn deserialize<D>(deserializer: D) -> result::Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let map = Map::deserialize(deserializer)?;
+
+        if let None = map.get("error") {
+            let value = Value::Object(map);
+
+            Resource::deserialize(value)
+                .map(ResponseBody::Success)
+                .map_err(de::Error::custom)
+        } else {
+            let value = Value::Object(map);
+            ErrorResponseBody::deserialize(value)
+                .map(ResponseBody::Error)
+                .map_err(de::Error::custom)
+        }
+    }
 }
 
 //
