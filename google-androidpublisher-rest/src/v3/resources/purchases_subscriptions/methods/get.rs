@@ -2,6 +2,7 @@
 
 use std::io;
 
+use google_rest_resource_method::ResponseBody;
 use http::{
     header::{ACCEPT, AUTHORIZATION},
     Method, StatusCode, Version,
@@ -33,7 +34,7 @@ impl PurchasesSubscriptionsGet {
 }
 
 impl Endpoint for PurchasesSubscriptionsGet {
-    type ParseResponseOutput = SubscriptionPurchase;
+    type ParseResponseOutput = ResponseBody<SubscriptionPurchase>;
     type RetryReason = ();
 
     fn render_request(&self) -> io::Result<Request<Body>> {
@@ -65,7 +66,7 @@ impl Endpoint for PurchasesSubscriptionsGet {
             }
         }
 
-        let body: SubscriptionPurchase = serde_json::from_slice(response.body())?;
+        let body: Self::ParseResponseOutput = serde_json::from_slice(response.body())?;
 
         Ok(EndpointParseResponseOutput::Done(body))
     }
