@@ -1,12 +1,11 @@
 // ref https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions/get
 
-use std::io;
-
 use google_rest_resource_method::ResponseBody;
 use http::{
     header::{ACCEPT, AUTHORIZATION},
-    Method, StatusCode, Version,
+    Error as HttpError, Method, StatusCode, Version,
 };
+use serde_json::Error as SerdeJsonError;
 
 use crate::v3::resources::resource_method_prelude::*;
 use crate::v3::SubscriptionPurchase;
@@ -34,10 +33,12 @@ impl PurchasesSubscriptionsGet {
 }
 
 impl Endpoint for PurchasesSubscriptionsGet {
-    type ParseResponseOutput = ResponseBody<SubscriptionPurchase>;
-    type RetryReason = ();
+    type RenderRequestError = PurchasesSubscriptionsGetError;
 
-    fn render_request(&self) -> io::Result<Request<Body>> {
+    type ParseResponseOutput = ResponseBody<SubscriptionPurchase>;
+    type ParseResponseError = PurchasesSubscriptionsGetError;
+
+    fn render_request(&self) -> Result<Request<Body>, Self::RenderRequestError> {
         let url = format!("https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{}/purchases/subscriptions/{}/tokens/{}", self.package_name, self.subscription_id, self.token);
 
         let request = Request::builder()
@@ -47,29 +48,39 @@ impl Endpoint for PurchasesSubscriptionsGet {
             .header(AUTHORIZATION, format!("Bearer {}", self.access_token))
             .header(ACCEPT, "application/json")
             .body(vec![])
-            .map_err(|err| io::Error::new(io::ErrorKind::Other, err))?;
+            .map_err(PurchasesSubscriptionsGetError::MakeRequestFailed)?;
 
         Ok(request)
     }
 
     fn parse_response(
-        &mut self,
+        &self,
         response: Response<Body>,
-    ) -> io::Result<EndpointParseResponseOutput<Self::ParseResponseOutput, Self::RetryReason>> {
+    ) -> Result<Self::ParseResponseOutput, Self::ParseResponseError> {
         match response.status() {
             StatusCode::OK => {}
             _ => {
-                return Err(io::Error::new(
-                    io::ErrorKind::Other,
-                    format!("status [{}] mismatch", response.status()),
+                return Err(PurchasesSubscriptionsGetError::StatusMismatch(
+                    response.status(),
                 ));
             }
         }
 
-        let body: Self::ParseResponseOutput = serde_json::from_slice(response.body())?;
+        let body: Self::ParseResponseOutput = serde_json::from_slice(response.body())
+            .map_err(PurchasesSubscriptionsGetError::DeResponseBodyOkJsonFailed)?;
 
-        Ok(EndpointParseResponseOutput::Done(body))
+        Ok(body)
     }
 }
 
 impl ResourceMethod for PurchasesSubscriptionsGet {}
+
+#[derive(thiserror::Error, Debug)]
+pub enum PurchasesSubscriptionsGetError {
+    #[error("MakeRequestFailed {0}")]
+    MakeRequestFailed(HttpError),
+    #[error("StatusMismatch {0}")]
+    StatusMismatch(StatusCode),
+    #[error("DeResponseBodyOkJsonFailed {0}")]
+    DeResponseBodyOkJsonFailed(SerdeJsonError),
+}

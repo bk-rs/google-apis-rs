@@ -1,4 +1,4 @@
-pub use google_rest_endpoint::*;
+pub use http_api_client_endpoint::*;
 
 //
 //

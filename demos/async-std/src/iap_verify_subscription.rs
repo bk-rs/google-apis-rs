@@ -2,18 +2,17 @@
 cargo run -p googleapis-demo-async-std --bin iap_verify_subscription 'YOUR_GOOGLE_IAP_ACCESS_TOKEN' 'package_name' 'subscription_id' 'token'
 */
 
-use std::env;
-use std::io;
+use std::{env, error};
 
 use google_androidpublisher_rest::v3::PurchasesSubscriptionsGet;
-use google_rest_isahc_client::{Client, IsahcClient};
+use http_api_isahc_client::{Client as _, IsahcClient};
 
 #[async_std::main]
-async fn main() -> io::Result<()> {
+async fn main() -> Result<(), Box<dyn error::Error>> {
     run().await
 }
 
-async fn run() -> io::Result<()> {
+async fn run() -> Result<(), Box<dyn error::Error>> {
     let google_iap_access_token = env::args()
         .nth(1)
         .unwrap_or_else(|| env::var("GOOGLE_IAP_ACCESS_TOKEN").unwrap());
@@ -30,7 +29,7 @@ async fn run() -> io::Result<()> {
     println!("iap_verify_subscription");
 
     //
-    let mut resource_method = PurchasesSubscriptionsGet::new(
+    let resource_method = PurchasesSubscriptionsGet::new(
         package_name,
         subscription_id,
         token,
@@ -39,9 +38,7 @@ async fn run() -> io::Result<()> {
 
     let isahc_client = IsahcClient::new()?;
 
-    let resource = isahc_client
-        .respond_endpoint_until_done(&mut resource_method, None)
-        .await?;
+    let resource = isahc_client.respond_endpoint(&resource_method).await?;
 
     println!("{:?}", resource);
 

@@ -5,6 +5,7 @@ authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-google-rest-endpoint = { path = "../google-rest-endpoint", version = "0.1", default-features = false, features = [] }
+http-api-client-endpoint = { version = "0.2" }
+
 serde = { version = "1.0", default-features = false, features = ["std", "derive"] }
 serde_json = { version = "1.0", default-features = false, features = ["std"] }

@@ -14,6 +14,7 @@ path = "src/iap_verify_product.rs"
 
 [dependencies]
 google-androidpublisher-rest = { path = "../../google-androidpublisher-rest", version = "0.1" }
-google-rest-isahc-client = { path = "../../google-rest-isahc-client", version = "0.1" }
+
+http-api-isahc-client = { version = "0.2" }
 
 async-std = { version = "1.6", default-features = false, features = ["default", "attributes"] }
