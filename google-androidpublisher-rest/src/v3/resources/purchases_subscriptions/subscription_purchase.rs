@@ -205,7 +205,7 @@ fn deserialize_datetime_utc_from_milliseconds_option<'de, D>(
 where
     D: Deserializer<'de>,
 {
-    deserialize_datetime_utc_from_milliseconds(deserializer).map(|x| Some(x))
+    deserialize_datetime_utc_from_milliseconds(deserializer).map(Some)
 }
 
 #[cfg(test)]
@@ -237,7 +237,7 @@ mod tests {
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
         assert_eq!(r.start_time.timestamp_millis(), 1565173322987);
         assert_eq!(r.expiry_time.timestamp_millis(), 1565173847452);
-        assert_eq!(r.auto_renewing, true);
+        assert!(r.auto_renewing);
         assert_eq!(r.price_currency_code, "USD");
         assert_eq!(r.price_amount_micros, 6490000);
         assert_eq!(r.country_code, "US");
@@ -272,7 +272,7 @@ mod tests {
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
         assert_eq!(r.start_time.timestamp_millis(), 1565163156123);
         assert_eq!(r.expiry_time.timestamp_millis(), 1565165367979);
-        assert_eq!(r.auto_renewing, false);
+        assert!(!r.auto_renewing);
         assert_eq!(r.price_currency_code, "USD");
         assert_eq!(r.price_amount_micros, 6490000);
         assert_eq!(r.country_code, "US");

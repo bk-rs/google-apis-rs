@@ -18,7 +18,7 @@ where
     {
         let map = Map::deserialize(deserializer)?;
 
-        if let None = map.get("error") {
+        if map.get("error").is_none() {
             let value = Value::Object(map);
 
             Resource::deserialize(value)
@@ -82,7 +82,7 @@ mod tests {
             ResponseBody::Success(foo) => {
                 assert_eq!(foo.name, "bar");
             }
-            ResponseBody::Error(_) => assert!(false),
+            ResponseBody::Error(_) => panic!(),
         }
 
         Ok(())
@@ -108,7 +108,7 @@ mod tests {
 
         let b: ResponseBody<()> = serde_json::from_str(json)?;
         match b {
-            ResponseBody::Success(_) => assert!(false),
+            ResponseBody::Success(_) => panic!(),
             ResponseBody::Error(b) => {
                 assert_eq!(b.error.errors.len(), 1);
                 let err = b.error.errors.first().unwrap();
@@ -147,7 +147,7 @@ mod tests {
 
         let b: ResponseBody<()> = serde_json::from_str(json)?;
         match b {
-            ResponseBody::Success(_) => assert!(false),
+            ResponseBody::Success(_) => panic!(),
             ResponseBody::Error(b) => {
                 assert_eq!(b.error.errors.len(), 1);
                 let err = b.error.errors.first().unwrap();
