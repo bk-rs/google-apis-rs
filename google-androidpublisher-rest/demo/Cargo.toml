@@ -1,0 +1,20 @@
+[package]
+name = "google-androidpublisher-rest-demo"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "google_androidpublisher_rest_verify_purchases_product"
+path = "src/verify_purchases_product.rs"
+
+[[bin]]
+name = "google_androidpublisher_rest_verify_purchases_subscription"
+path = "src/verify_purchases_subscription.rs"
+
+[dependencies]
+google-androidpublisher-rest = { path = "..", version = "0.1" }
+
+http-api-isahc-client = { version = "0.2" }
+
+futures-lite = { version = "1.11" }
+pretty_env_logger = { version = "0.4" }

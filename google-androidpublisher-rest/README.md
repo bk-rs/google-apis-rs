@@ -7,7 +7,8 @@
 
 ### async-std
 
-* [verify subscription](../demos/async-std/src/iap_verify_subscription.rs)
+* [verify product](demo/src/iap_verify_product.rs)
+* [verify subscription](demo/src/iap_verify_subscription.rs)
 
 ## Dev
 

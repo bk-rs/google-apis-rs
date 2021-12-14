@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "demos/async-std",
     "google-androidpublisher-rest",
+    "google-androidpublisher-rest/demo",
     "google-rest-resource-method",
 ]

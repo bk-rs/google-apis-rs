@@ -1,15 +1,17 @@
 /*
-cargo run -p googleapis-demo-async-std --bin iap_verify_product 'YOUR_GOOGLE_IAP_ACCESS_TOKEN' 'package_name' 'product_id' 'token'
+RUST_BACKTRACE=full RUST_LOG=trace cargo run -p google-androidpublisher-rest-demo --bin google_androidpublisher_rest_verify_purchases_product 'YOUR_GOOGLE_IAP_ACCESS_TOKEN' 'package_name' 'product_id' 'token'
 */
 
 use std::{env, error};
 
+use futures_lite::future::block_on;
 use google_androidpublisher_rest::v3::PurchasesProductsGet;
 use http_api_isahc_client::{Client as _, IsahcClient};
 
-#[async_std::main]
-async fn main() -> Result<(), Box<dyn error::Error>> {
-    run().await
+fn main() -> Result<(), Box<dyn error::Error>> {
+    pretty_env_logger::init();
+
+    block_on(run())
 }
 
 async fn run() -> Result<(), Box<dyn error::Error>> {
@@ -26,8 +28,6 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
         .nth(4)
         .unwrap_or_else(|| env::var("TOKEN").unwrap());
 
-    println!("iap_verify_product");
-
     //
     let resource_method =
         PurchasesProductsGet::new(package_name, product_id, token, google_iap_access_token);
@@ -37,8 +37,6 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
     let resource = isahc_client.respond_endpoint(&resource_method).await?;
 
     println!("{:?}", resource);
-
-    println!("done");
 
     Ok(())
 }
