@@ -2,7 +2,7 @@
 name = "google-rest-resource-method"
 version = "0.1.0"
 authors = ["vkill <vkill.net@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 http-api-client-endpoint = { version = "0.2" }
