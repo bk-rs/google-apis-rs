@@ -1,9 +1,6 @@
 [workspace]
 members = [
     "demos/async-std",
-    "google-admob-rest",
     "google-androidpublisher-rest",
-    "google-appengine-rest",
-    "google-oauth2",
     "google-rest-resource-method",
 ]
