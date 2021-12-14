@@ -45,9 +45,7 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
         .respond_endpoint_with_callback(
             &resource_method,
             |mut req| {
-                *req.uri_mut() = format!("{}?key={}", req.uri().to_string(), api_key)
-                    .parse()
-                    .unwrap();
+                *req.uri_mut() = format!("{}?key={}", req.uri(), api_key).parse().unwrap();
 
                 req
             },
