@@ -1,0 +1,38 @@
+{
+    "responses": [
+        {
+            "labelAnnotations": [
+                {
+                    "mid": "/m/0h9mv",
+                    "description": "Tire",
+                    "score": 0.9657605,
+                    "topicality": 0.9657605
+                },
+                {
+                    "mid": "/m/0199g",
+                    "description": "Bicycle",
+                    "score": 0.9620508,
+                    "topicality": 0.9620508
+                },
+                {
+                    "mid": "/m/083wq",
+                    "description": "Wheel",
+                    "score": 0.91835886,
+                    "topicality": 0.91835886
+                },
+                {
+                    "mid": "/m/0768fx",
+                    "description": "Automotive lighting",
+                    "score": 0.9146768,
+                    "topicality": 0.9146768
+                },
+                {
+                    "mid": "/m/017kvv",
+                    "description": "Infrastructure",
+                    "score": 0.8924019,
+                    "topicality": 0.8924019
+                }
+            ]
+        }
+    ]
+}

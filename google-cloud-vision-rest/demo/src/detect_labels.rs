@@ -1,5 +1,5 @@
 /*
-RUST_BACKTRACE=full RUST_LOG=trace cargo run -p google-cloud-vision-rest-demo --bin google_cloud_vision_rest_detect_labels 'YOUR_GOOGLE_ACCESS_TOKEN'
+RUST_BACKTRACE=full RUST_LOG=trace cargo run -p google-cloud-vision-rest-demo --bin google_cloud_vision_rest_detect_labels 'YOUR_API_KEY'
 */
 
 use std::{env, error};
@@ -18,9 +18,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 }
 
 async fn run() -> Result<(), Box<dyn error::Error>> {
-    let access_token = env::args()
-        .nth(1)
-        .unwrap_or_else(|| env::var("GOOGLE_CLOUD_VISION_ACCESS_TOKEN").unwrap());
+    let api_key = env::args().nth(1).unwrap();
 
     let image_bytes = include_bytes!("../../tests/image_files/setagaya_small.jpeg");
 
@@ -38,12 +36,24 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
             }],
             parent: None,
         },
-        access_token,
+        None,
     );
 
     let isahc_client = IsahcClient::new()?;
 
-    let response_body = isahc_client.respond_endpoint(&resource_method).await?;
+    let response_body = isahc_client
+        .respond_endpoint_with_callback(
+            &resource_method,
+            |mut req| {
+                *req.uri_mut() = format!("{}?key={}", req.uri().to_string(), api_key)
+                    .parse()
+                    .unwrap();
+
+                req
+            },
+            |_| {},
+        )
+        .await?;
 
     println!("{:?}", response_body);
 

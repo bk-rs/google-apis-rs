@@ -2,7 +2,7 @@
 
 use http_api_client_endpoint::{
     http::{
-        header::{ACCEPT, AUTHORIZATION},
+        header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
         Method,
     },
     MIME_APPLICATION_JSON,
@@ -21,13 +21,16 @@ pub const URL: &str = "https://vision.googleapis.com/v1/images:annotate";
 
 pub struct ImagesAnnotate {
     request_body: ImagesAnnotateRequestBody,
-    access_token: String,
+    oauth2_access_token: Option<String>,
 }
 impl ImagesAnnotate {
-    pub fn new(request_body: ImagesAnnotateRequestBody, access_token: String) -> Self {
+    pub fn new(
+        request_body: ImagesAnnotateRequestBody,
+        oauth2_access_token: Option<String>,
+    ) -> Self {
         Self {
             request_body,
-            access_token,
+            oauth2_access_token,
         }
     }
 }
@@ -42,10 +45,14 @@ impl Endpoint for ImagesAnnotate {
         let body = serde_json::to_vec(&self.request_body)
             .map_err(MethodEndpointError::SerRequestBodyFailed)?;
 
-        let request = Request::builder()
-            .method(Method::POST)
-            .uri(URL)
-            .header(AUTHORIZATION, format!("Bearer {}", self.access_token))
+        let mut request = Request::builder().method(Method::POST).uri(URL);
+
+        if let Some(oauth2_access_token) = &self.oauth2_access_token {
+            request = request.header(AUTHORIZATION, format!("Bearer {}", oauth2_access_token));
+        }
+
+        let request = request
+            .header(CONTENT_TYPE, MIME_APPLICATION_JSON)
             .header(ACCEPT, MIME_APPLICATION_JSON)
             .body(body)
             .map_err(MethodEndpointError::MakeRequestFailed)?;
@@ -69,4 +76,21 @@ pub struct ImagesAnnotateRequestBody {
     pub requests: Vec<AnnotateImageRequest>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<String>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn de_response_body() {
+        match serde_json::from_str::<BatchAnnotateImagesResponse>(include_str!(
+            "../../../../../tests/response_body_files/images_annotate_ok.json"
+        )) {
+            Ok(body) => {
+                assert_eq!(body.responses.len(), 1);
+            }
+            Err(err) => panic!("{}", err),
+        }
+    }
 }
