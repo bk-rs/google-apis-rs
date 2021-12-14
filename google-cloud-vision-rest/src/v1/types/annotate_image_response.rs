@@ -3,8 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    shared_types::LatLng,
-    v1::resources::projects::locations::products::reference_images::BoundingPoly,
+    shared_types::LatLng, v1::resources::projects_locations_products_reference_images::BoundingPoly,
 };
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
