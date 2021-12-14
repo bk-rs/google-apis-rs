@@ -18,10 +18,12 @@ use crate::v1::{
 
 pub const URL: &str = "https://vision.googleapis.com/v1/images:annotate";
 
+#[derive(Debug, Clone)]
 pub struct ImagesAnnotate {
     request_body: ImagesAnnotateRequestBody,
     oauth2_access_token: Option<String>,
 }
+
 impl ImagesAnnotate {
     pub fn new(
         request_body: ImagesAnnotateRequestBody,
