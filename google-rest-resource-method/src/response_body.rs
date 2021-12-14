@@ -62,34 +62,30 @@ pub struct ErrorResponseBodyErrorError {
 mod tests {
     use super::*;
 
-    use std::io;
-
     #[derive(Deserialize)]
     struct Foo {
         pub name: String,
     }
 
     #[test]
-    fn success() -> io::Result<()> {
+    fn success() {
         let json = r#"
         {
             "name": "bar"
         }
         "#;
 
-        let b: ResponseBody<Foo> = serde_json::from_str(json)?;
+        let b: ResponseBody<Foo> = serde_json::from_str(json).unwrap();
         match b {
             ResponseBody::Success(foo) => {
                 assert_eq!(foo.name, "bar");
             }
             ResponseBody::Error(_) => panic!(),
         }
-
-        Ok(())
     }
 
     #[test]
-    fn error_code_is_400() -> io::Result<()> {
+    fn error_code_is_400() {
         let json = r#"
         {
             "error": {
@@ -106,7 +102,7 @@ mod tests {
         }
         "#;
 
-        let b: ResponseBody<()> = serde_json::from_str(json)?;
+        let b: ResponseBody<()> = serde_json::from_str(json).unwrap();
         match b {
             ResponseBody::Success(_) => panic!(),
             ResponseBody::Error(b) => {
@@ -121,12 +117,10 @@ mod tests {
                 assert_eq!(b.error.message, "Invalid Value");
             }
         }
-
-        Ok(())
     }
 
     #[test]
-    fn error_code_is_404() -> io::Result<()> {
+    fn error_code_is_404() {
         let json = r#"
         {
             "error": {
@@ -145,7 +139,7 @@ mod tests {
         }
         "#;
 
-        let b: ResponseBody<()> = serde_json::from_str(json)?;
+        let b: ResponseBody<()> = serde_json::from_str(json).unwrap();
         match b {
             ResponseBody::Success(_) => panic!(),
             ResponseBody::Error(b) => {
@@ -155,7 +149,5 @@ mod tests {
                 assert_eq!(err.location, Some("packageName".to_owned()));
             }
         }
-
-        Ok(())
     }
 }

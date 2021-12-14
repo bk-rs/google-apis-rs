@@ -1,15 +1,12 @@
-use std::fs;
-use std::io;
-use std::path::PathBuf;
+use std::{error, fs, path::PathBuf};
 
-use google_androidpublisher_rest::v3::types::purchases_kind::PurchasesKind;
-use google_androidpublisher_rest::v3::ProductPurchase;
+use google_androidpublisher_rest::v3::{types::purchases_kind::PurchasesKind, ProductPurchase};
 use google_rest_resource_method::ResponseBody;
 
 #[test]
-fn de_all() -> io::Result<()> {
+fn de_all() -> Result<(), Box<dyn error::Error>> {
     let dir = PathBuf::new().join("tests/purchases_subscriptions_get_response_body_json_files");
-    for entry in fs::read_dir(dir).unwrap() {
+    for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
         if path.is_file() && Some(Some("json")) == path.extension().map(|x| x.to_str()) {
@@ -27,7 +24,7 @@ fn de_all() -> io::Result<()> {
                 },
                 Err(err) => {
                     eprintln!("path {:?} de failed, err: {:?}", path, err);
-                    return Err(io::Error::new(io::ErrorKind::Other, err));
+                    return Err(err.into());
                 }
             }
         }

@@ -212,10 +212,8 @@ where
 mod tests {
     use super::*;
 
-    use std::io;
-
     #[test]
-    fn auto_renewing_is_true() -> io::Result<()> {
+    fn auto_renewing_is_true() {
         let json = r#"
         {
             "kind": "androidpublisher#subscriptionPurchase",
@@ -232,7 +230,7 @@ mod tests {
         }
         "#;
 
-        let r: SubscriptionPurchase = serde_json::from_str(json)?;
+        let r: SubscriptionPurchase = serde_json::from_str(json).unwrap();
 
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
         assert_eq!(r.start_time.timestamp_millis(), 1565173322987);
@@ -245,12 +243,10 @@ mod tests {
         assert_eq!(r.payment_state, Some(PaymentState::PaymentReceived));
         assert_eq!(r.order_id, "GPA.0000-9829-1189-24947");
         assert_eq!(r.acknowledgement_state, AcknowledgementState::Acknowledged);
-
-        Ok(())
     }
 
     #[test]
-    fn auto_renewing_is_false() -> io::Result<()> {
+    fn auto_renewing_is_false() {
         let json = r#"
         {
             "kind": "androidpublisher#subscriptionPurchase",
@@ -267,7 +263,7 @@ mod tests {
         }
         "#;
 
-        let r: SubscriptionPurchase = serde_json::from_str(json)?;
+        let r: SubscriptionPurchase = serde_json::from_str(json).unwrap();
 
         assert_eq!(r.kind, PurchasesKind::SubscriptionPurchase);
         assert_eq!(r.start_time.timestamp_millis(), 1565163156123);
@@ -283,7 +279,5 @@ mod tests {
         );
         assert_eq!(r.order_id, "GPA.0000-2151-5181-25913..5");
         assert_eq!(r.acknowledgement_state, AcknowledgementState::Acknowledged);
-
-        Ok(())
     }
 }
