@@ -16,7 +16,9 @@ pub struct AnnotateImageRequest {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Image {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub content: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub source: Option<ImageSource>,
 }
 impl Image {
@@ -40,6 +42,8 @@ impl Image {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct ImageSource {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub gcs_image_uri: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub image_uri: Option<String>,
 }

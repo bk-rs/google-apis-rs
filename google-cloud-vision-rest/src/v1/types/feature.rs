@@ -7,7 +7,8 @@ use serde::{Deserialize, Serialize};
 pub struct Feature {
     pub r#type: Type,
     pub max_results: Option<usize>,
-    pub model: Model,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub model: Option<Model>,
 }
 
 #[allow(non_camel_case_types)]

@@ -5,7 +5,7 @@ authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-google-rest-resource-method = { path = "../google-rest-resource-method", version = "0.1", default-features = false, features = [] }
+google-rest-resource-method = { path = "../google-rest-resource-method", version = "0.1", default-features = false }
 
 serde = { version = "1.0", default-features = false, features = ["std", "derive"] }
 serde_json = { version = "1.0", default-features = false, features = ["std"] }
