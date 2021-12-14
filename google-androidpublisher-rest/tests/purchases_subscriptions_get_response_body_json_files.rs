@@ -1,6 +1,8 @@
 use std::{error, fs, path::PathBuf};
 
-use google_androidpublisher_rest::v3::{types::purchases_kind::PurchasesKind, ProductPurchase};
+use google_androidpublisher_rest::v3::{
+    resources::purchases_products::ProductPurchase, types::purchases_kind::PurchasesKind,
+};
 use google_rest_resource_method::ResponseBody;
 
 #[test]

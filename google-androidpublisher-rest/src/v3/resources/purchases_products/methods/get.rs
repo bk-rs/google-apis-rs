@@ -1,13 +1,15 @@
-// ref https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions/get
+//! [Ref](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions/get)
 
-use google_rest_resource_method::ResponseBody;
-use http::{
+use google_rest_resource_method::http_api_client_endpoint::http::{
     header::{ACCEPT, AUTHORIZATION},
-    Error as HttpError, Method, StatusCode, Version,
+    Error as HttpError, Method, StatusCode,
 };
+use google_rest_resource_method::ResponseBody;
 use serde_json::Error as SerdeJsonError;
 
-use crate::v3::{resources::resource_method_prelude::*, ProductPurchase};
+use crate::v3::resources::resource_method_prelude::*;
+
+use super::super::ProductPurchase;
 
 pub struct PurchasesProductsGet {
     package_name: String,
@@ -43,7 +45,6 @@ impl Endpoint for PurchasesProductsGet {
         let request = Request::builder()
             .method(Method::GET)
             .uri(url)
-            .version(Version::HTTP_11)
             .header(AUTHORIZATION, format!("Bearer {}", self.access_token))
             .header(ACCEPT, "application/json")
             .body(vec![])

@@ -2,5 +2,6 @@
 members = [
     "google-androidpublisher-rest",
     "google-androidpublisher-rest/demo",
+    "google-cloud-vision-rest",
     "google-rest-resource-method",
 ]

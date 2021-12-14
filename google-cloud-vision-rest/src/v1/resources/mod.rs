@@ -1,5 +1,5 @@
-pub mod purchases_products;
-pub mod purchases_subscriptions;
+pub mod images;
+pub mod projects;
 
 //
 //
