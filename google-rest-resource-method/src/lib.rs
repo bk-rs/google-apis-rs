@@ -1,4 +1,6 @@
-pub use http_api_client_endpoint::*;
+pub use http_api_client_endpoint;
+
+use http_api_client_endpoint::Endpoint;
 
 //
 //

@@ -1,5 +1,3 @@
-use std::result;
-
 use serde::{de, Deserialize, Deserializer};
 use serde_json::{Map, Value};
 
@@ -12,7 +10,7 @@ impl<'de, Resource> Deserialize<'de> for ResponseBody<Resource>
 where
     Resource: Deserialize<'de>,
 {
-    fn deserialize<D>(deserializer: D) -> result::Result<Self, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {

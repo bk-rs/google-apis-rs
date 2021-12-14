@@ -7,8 +7,7 @@ use http::{
 };
 use serde_json::Error as SerdeJsonError;
 
-use crate::v3::resources::resource_method_prelude::*;
-use crate::v3::SubscriptionPurchase;
+use crate::v3::{resources::resource_method_prelude::*, SubscriptionPurchase};
 
 pub struct PurchasesSubscriptionsGet {
     package_name: String,
