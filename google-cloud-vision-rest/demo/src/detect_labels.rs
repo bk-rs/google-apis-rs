@@ -22,6 +22,8 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
 
     let image_bytes = include_bytes!("../../tests/image_files/setagaya_small.jpeg");
 
+    let isahc_client = IsahcClient::new()?;
+
     //
     let resource_method = ImagesAnnotate::new(
         ImagesAnnotateRequestBody {
@@ -39,9 +41,7 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
         None,
     );
 
-    let isahc_client = IsahcClient::new()?;
-
-    let response_body = isahc_client
+    let ret = isahc_client
         .respond_endpoint_with_callback(
             &resource_method,
             |mut req| {
@@ -53,7 +53,7 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
         )
         .await?;
 
-    println!("{:?}", response_body);
+    println!("{:?}", ret);
 
     Ok(())
 }

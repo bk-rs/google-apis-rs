@@ -28,15 +28,15 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
         .nth(4)
         .unwrap_or_else(|| env::var("TOKEN").unwrap());
 
+    let isahc_client = IsahcClient::new()?;
+
     //
     let resource_method =
         PurchasesProductsGet::new(package_name, product_id, token, google_iap_access_token);
 
-    let isahc_client = IsahcClient::new()?;
+    let ret = isahc_client.respond_endpoint(&resource_method).await?;
 
-    let resource = isahc_client.respond_endpoint(&resource_method).await?;
-
-    println!("{:?}", resource);
+    println!("{:?}", ret);
 
     Ok(())
 }
