@@ -5,14 +5,13 @@ use http_api_client_endpoint::{
         header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
         Method,
     },
-    MIME_APPLICATION_JSON,
+    Body, Endpoint, Request, Response, MIME_APPLICATION_JSON,
 };
 use serde::{Deserialize, Serialize};
 
 use crate::v1::{
-    resources::{
-        method_common::{method_endpoint_parse_response, MethodEndpointError, MethodEndpointRet},
-        resource_method_prelude::*,
+    resources::method_common::{
+        method_endpoint_parse_response, MethodEndpointError, MethodEndpointRet,
     },
     types::{AnnotateImageRequest, BatchAnnotateImagesResponse},
 };

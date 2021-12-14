@@ -1,8 +1,11 @@
 //! [Ref](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions/get)
 
-use google_rest_resource_method::http_api_client_endpoint::http::{
-    header::{ACCEPT, AUTHORIZATION},
-    Error as HttpError, Method, StatusCode,
+use google_rest_resource_method::http_api_client_endpoint::{
+    http::{
+        header::{ACCEPT, AUTHORIZATION},
+        Error as HttpError, Method, StatusCode,
+    },
+    Body, Endpoint, Request, Response,
 };
 use google_rest_resource_method::ResponseBody;
 use serde_json::Error as SerdeJsonError;

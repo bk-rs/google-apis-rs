@@ -8,7 +8,7 @@ name = "google_cloud_vision_rest_detect_labels"
 path = "src/detect_labels.rs"
 
 [dependencies]
-google-cloud-vision-rest = { path = "..", version = "0.1" }
+google-cloud-vision-rest = { path = "..", version = "^0.1" }
 
 http-api-isahc-client = { version = "0.2" }
 
