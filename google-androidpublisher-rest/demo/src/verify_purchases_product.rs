@@ -18,15 +18,9 @@ async fn run() -> Result<(), Box<dyn error::Error>> {
     let google_iap_access_token = env::args()
         .nth(1)
         .unwrap_or_else(|| env::var("GOOGLE_IAP_ACCESS_TOKEN").unwrap());
-    let package_name = env::args()
-        .nth(2)
-        .unwrap_or_else(|| env::var("PACKAGE_NAME").unwrap());
-    let product_id = env::args()
-        .nth(3)
-        .unwrap_or_else(|| env::var("PRODUCT_ID").unwrap());
-    let token = env::args()
-        .nth(4)
-        .unwrap_or_else(|| env::var("TOKEN").unwrap());
+    let package_name = env::args().nth(2).unwrap();
+    let product_id = env::args().nth(3).unwrap();
+    let token = env::args().nth(4).unwrap();
 
     let isahc_client = IsahcClient::new()?;
 

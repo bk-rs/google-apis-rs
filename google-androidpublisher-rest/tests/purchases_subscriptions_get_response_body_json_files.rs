@@ -1,7 +1,7 @@
 use std::{error, fs, path::PathBuf};
 
 use google_androidpublisher_rest::v3::{
-    resources::{method_common::MethodResponseErrorBody, purchases_products::ProductPurchase},
+    resources::{purchases_products::ProductPurchase, MethodResponseErrorBody},
     types::purchases_kind::PurchasesKind,
 };
 use serde::Deserialize;
