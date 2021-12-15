@@ -1,10 +1,10 @@
-use serde::Deserialize;
+//! https://developers.google.com/android-publisher/api-ref/rest/v3/Price
 
-#[derive(Deserialize, Debug)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Price {
-    #[serde(rename(deserialize = "priceMicros"))]
     pub price_micros: String,
-
-    #[serde(rename(deserialize = "currency"))]
     pub currency: String,
 }

@@ -1,0 +1,15 @@
+{
+    "error": {
+        "errors": [
+            {
+                "domain": "global",
+                "reason": "applicationNotFound",
+                "message": "No application was found for the given package name.",
+                "locationType": "parameter",
+                "location": "packageName"
+            }
+        ],
+        "code": 404,
+        "message": "No application was found for the given package name."
+    }
+}

@@ -5,12 +5,12 @@ authors = ["vkill <vkill.net@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-google-rest-resource-method = { path = "../google-rest-resource-method", version = "0.1", default-features = false }
+http-api-client-endpoint = { version = "0.2", default-features = false }
 
 serde = { version = "1.0", default-features = false, features = ["std", "derive"] }
 serde_json = { version = "1.0", default-features = false, features = ["std"] }
-chrono = { version = "0.4", default-features = false, features = [] }
+chrono = { version = "0.4", default-features = false, features = ["serde"] }
 serde-aux = { version = "0.6", default-features = false, features = ["chrono"] }
-serde_repr = { version = "0.1", default-features = false, features = [] }
+serde_repr = { version = "0.1", default-features = false }
 
 thiserror = { version = "1.0", default-features = false }
