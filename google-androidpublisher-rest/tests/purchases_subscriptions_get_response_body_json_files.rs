@@ -1,9 +1,16 @@
 use std::{error, fs, path::PathBuf};
 
 use google_androidpublisher_rest::v3::{
-    resources::{method_common::MethodEndpointRet, purchases_products::ProductPurchase},
+    resources::{method_common::MethodResponseErrorBody, purchases_products::ProductPurchase},
     types::purchases_kind::PurchasesKind,
 };
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+enum ResponseBody {
+    Success(ProductPurchase),
+    Error(MethodResponseErrorBody),
+}
 
 #[test]
 fn de_all() -> Result<(), Box<dyn error::Error>> {
@@ -13,18 +20,15 @@ fn de_all() -> Result<(), Box<dyn error::Error>> {
         let path = entry.path();
         if path.is_file() && Some(Some("json")) == path.extension().map(|x| x.to_str()) {
             let content = fs::read_to_string(&path)?;
-            match serde_json::from_str::<MethodEndpointRet<ProductPurchase>>(&content) {
+            match serde_json::from_str::<ResponseBody>(&content) {
                 Ok(response_body) => match response_body {
-                    MethodEndpointRet::Ok(resource) => {
+                    ResponseBody::Success(resource) => {
                         assert_eq!(resource.kind, PurchasesKind::SubscriptionPurchase);
 
                         println!("path {:?} de successful", path);
                     }
-                    MethodEndpointRet::Other((_, Ok(body))) => {
+                    ResponseBody::Error(body) => {
                         println!("path {:?} de successful, body: {:?}", path, body);
-                    }
-                    MethodEndpointRet::Other((_, Err(_))) => {
-                        panic!("path {:?}", path)
                     }
                 },
                 Err(err) => {
