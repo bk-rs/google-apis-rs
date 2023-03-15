@@ -1,5 +1,6 @@
 //! https://cloud.google.com/vision/docs/reference/rest/v1/AnnotateImageRequest
 
+use base64::{engine::general_purpose, Engine as _};
 use serde::{Deserialize, Serialize};
 
 use super::{Feature, ImageContext};
@@ -24,7 +25,7 @@ pub struct Image {
 impl Image {
     pub fn with_bytes(binary_data: Vec<u8>) -> Self {
         Self {
-            content: Some(base64::encode(binary_data)),
+            content: Some(general_purpose::STANDARD.encode(binary_data)),
             source: None,
         }
     }
